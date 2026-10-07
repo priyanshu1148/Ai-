@@ -23,7 +23,7 @@ const providers = require('./lib/providers');
 
 core.loadEnv();
 
-const PORT = parseInt(process.env.PORT || '8787', 10);
+const PORT = Number(process.env.PORT || process.env.DASHBOARD_PORT) || 8787;
 
 /* ==========================================================================
    Boot: ensure data/ + db.json, seed the demo tenant, migrate legacy agents.
@@ -532,7 +532,7 @@ boot().then(() => {
     console.log('\n  AI Automation Lab  ready');
     console.log(`  Marketing : http://localhost:${PORT}/`);
     console.log(`  Console   : http://localhost:${PORT}/app.html`);
-    console.log(`  Demo login: ${DEMO_EMAIL} / ${DEMO_PASS}`);
+   console.log(`  Admin login : ${DEMO_EMAIL}`);
     console.log(`  Providers : rumik ${flag('tts', 'rumik')}  gemini ${flag('llm', 'gemini')}  voicelink ${flag('telephony', 'voicelink')}  model=${providers.llm.model}\n`);
   });
 }).catch((e) => {
