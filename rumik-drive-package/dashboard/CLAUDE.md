@@ -32,12 +32,6 @@ node server.js     # serves the API and the static public/ site on PORT (default
 
 Open `http://localhost:8787`. No `npm install`, ever.
 
-### Demo login (seeded on first boot)
-
-```
-email:    priyanshu.automation.lab@gmail.com
-password: AI Automation Lab voice
-tenant:   AI Automation LabDemo
 ```
 
 On first boot, if `data/db.json` is missing, the server creates it and seeds this demo tenant

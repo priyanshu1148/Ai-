@@ -48,11 +48,18 @@ function loadEnv() {
    2. http helpers
    ========================================================================== */
 
-// Security headers applied to every response.
+/// Security headers applied to every response.
 const BASE_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
   'X-Frame-Options': 'SAMEORIGIN',
+  'Strict-Transport-Security': 'max-age=31536000',
+  'Permissions-Policy': 'camera=(), geolocation=(), microphone=(self)',
+  'Content-Security-Policy-Report-Only':
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
+    "img-src 'self' data: blob:; media-src 'self' blob: data:; font-src 'self' data:; " +
+    "connect-src 'self' wss://*.rumik.ai; object-src 'none'; base-uri 'self'; " +
+    "frame-ancestors 'self'; form-action 'self'",
 };
 
 function send(res, status, body, headers = {}) {
