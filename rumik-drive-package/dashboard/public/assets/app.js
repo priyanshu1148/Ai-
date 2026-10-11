@@ -238,9 +238,11 @@ function renderAuth() {
       let body, route;
       if (mode === 'signup') {
         body = { email: email, password: password, name: ($('#f_name').value || '').trim(), company: ($('#f_company').value || '').trim() };
+              fields.push(field('Invite code', el('input', { class: 'input', id: 'f_invite', type: 'text', placeholder: 'Invite code', autocomplete: 'off' })));
         route = '/api/auth/signup';
       } else {
         body = { email: email, password: password };
+        body = { email: email, password: password, name: ($('#f_name').value || '').trim(), company: ($('#f_company').value || '').trim(), invite: ($('#f_invite').value || '').trim() };
         route = '/api/auth/login';
       }
       const res = await api(route, { method: 'POST', body: body, allow401: true });

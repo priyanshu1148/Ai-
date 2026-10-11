@@ -157,12 +157,21 @@ async function bumpUsage(tenantId, field, amount) {
    ========================================================================== */
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+const nodeCrypto = require('crypto');
+function inviteOk(given) {
+  const want = String(process.env.INVITE_CODE || '');
+  if (want.length < 8) return false; // जब तक कोड सेट न हो, साइन-अप बंद रहेगा
+  const a = Buffer.from(String(given || ''));
+  const b = Buffer.from(want);
+  return a.length === b.length && nodeCrypto.timingSafeEqual(a, b);
+}
 async function apiSignup(req, res, body) {
   const email = String(body.email || '').trim().toLowerCase();
   const password = String(body.password || '');
   const name = String(body.name || '').trim().slice(0, 80) || 'Owner';
   const company = String(body.company || '').trim().slice(0, 80) || `${name}'s Workspace`;
+    if (!inviteOk(body.invite)) return core.sendJson(res, 403, { error: 'a valid invite code is required', code: 'invite_required' });
+      if (password.length < 10) return core.sendJson(res, 422, { error: 'password must be at least 10 characters', code: 'weak_password' });
 
   if (!EMAIL_RE.test(email)) return core.sendJson(res, 422, { error: 'valid email required', code: 'bad_email' });
   if (password.length < 6) return core.sendJson(res, 422, { error: 'password must be at least 6 characters', code: 'weak_password' });
